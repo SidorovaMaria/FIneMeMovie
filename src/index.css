@@ -25,7 +25,9 @@ h4,
 h5,
 h6,
 p,
-li {
+li,
+label,
+button {
   color: var(--text);
   font-family: var(--font-nunito-sans);
 }

@@ -8,7 +8,7 @@ interface FilmsState {
 }
 
 export interface Film {
-  kinoposikId: number;
+  kinopoiskId: number;
   nameRu?: string;
   nameOriginal?: string;
   posterUrl?: string;
@@ -22,7 +22,7 @@ export interface Film {
   similarFilms: SimilarFilm[];
 }
 export interface Genre {
-  ganre: string;
+  genre: string;
 }
 export interface Budget {
   type: string;
@@ -45,12 +45,23 @@ const initialState: FilmsState = {
 interface FetchGalleryArgs {
   page?: number;
   sortValue?: string;
+  fromYear?: number;
+  toYear?: number;
+  fromRating?: number;
+  toRating?: number;
 }
 export const fetchFilmGallery = createAsyncThunk(
   "films/fetchGallery",
-  async ({ page = 1, sortValue = "RATING" }: FetchGalleryArgs) => {
+  async ({
+    page = 1,
+    sortValue = "RATING",
+    fromYear = 2000,
+    toYear = 2030,
+    fromRating = 0,
+    toRating = 10,
+  }: FetchGalleryArgs) => {
     const response = await fetch(
-      `https://kinopoiskapiunofficial.tech/api/v2.2/films?countries=3&genres=2&order=${sortValue}&type=ALL&ratingFrom=0&ratingTo=10&yearFrom=1000&yearTo=3000&page=${page}`,
+      `https://kinopoiskapiunofficial.tech/api/v2.2/films?countries=34&genres=2&order=${sortValue}&type=ALL&ratingFrom=${fromRating}&ratingTo=${toRating}&yearFrom=${fromYear}&yearTo=${toYear}&page=${page}`,
       {
         method: "GET",
         headers: {
