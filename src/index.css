@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  --font-fascinate: "Fascinate", serif;
+  --font-nunito-sans: "Nunito Sans", sans-serif;
+  --text: #e4e4e7;
+  --background: #35343c;
+  --backgrounddarker: #1e1d23;
+  --accent1: #aeaee8;
+  --accent2: #504e5a;
+  --accent3: #575798;
+}
+body {
+  background-color: var(--background);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li {
+  color: var(--text);
+  font-family: var(--font-nunito-sans);
+}
