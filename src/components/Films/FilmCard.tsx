@@ -18,11 +18,13 @@ export const FilmCard: React.FC<FilmCardProps> = ({ film }) => {
         />
 
         <div className="flex flex-col justify-around flex-grow rounded-b-xl p-2">
-          <p className="font-bold text-center text-xl text-white">
-            {film.nameRu || film.nameOriginal}
-            <span className="text-lg text-accent-1"> ({film.year}) </span>
+          <p className="font-bold text-center text-base lg:text-xl text-white">
+            {film.nameRu || film.nameOriginal}{" "}
+            <span className="text-xs md:text-sm lg:text-lg text-accent-1">
+              ({film.year})
+            </span>
           </p>
-          <div className="text-center font-medium tracking-wide text-sm px-3">
+          <div className="text-center font-medium tracking-wide text-xs md:text-sm px-3 py-2">
             {film.genres.map((genre, index) => (
               <span className="" key={`${film.kinopoiskId} - ${genre}`}>
                 {genre.genre}
@@ -31,17 +33,19 @@ export const FilmCard: React.FC<FilmCardProps> = ({ film }) => {
             ))}
           </div>
           <div className="flex justify-around ">
+            {film.ratingImdb ? (
+              <div className="text-center cursor-default" title="Rating">
+                <p className="text-accent-1 font-extrabold text-sm md:text-base lg:text-lg">
+                  {film.ratingImdb}
+                </p>
+                <p className="text-xs font-bold lg:text-base">IMDB</p>
+              </div>
+            ) : null}
             <div className="text-center cursor-default" title="Rating">
-              <p className="text-accent-1 font-extrabold text-xl">
-                {film.ratingImdb}
-              </p>
-              <p className="text-sm font-bold">IMDB</p>
-            </div>
-            <div className="text-center cursor-default" title="Rating">
-              <p className="text-accent-1 font-extrabold text-xl">
+              <p className="text-accent-1 font-extrabold text-sm md:text-base lg:text-lg">
                 {film.ratingKinopoisk}
               </p>
-              <p className="text-sm font-bold">Кинопоиск</p>
+              <p className="text-xs font-bold lg:text-base">Кинопоиск</p>
             </div>
           </div>
         </div>
