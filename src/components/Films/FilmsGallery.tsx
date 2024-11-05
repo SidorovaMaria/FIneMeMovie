@@ -53,10 +53,19 @@ const FilmsGallery = () => {
     setSorting(value);
     setFilmsParameters((prevParams) => ({
       ...prevParams,
-      sortValue: value.value, // Use the value directly here
+      sortValue: value.value,
+      page: 1, // Use the value directly here
     }));
     // Only trigger the fetch once sorting changes
     setResort(true);
+  };
+  const handleLoadMore = () => {
+    setFilmsParameters((prevParams) => ({
+      ...prevParams,
+      page: prevParams.page + 1, // Increment previous page by 1
+    }));
+    // Set `resort` to true if needed to trigger a new fetch, or call the fetch function directly here
+    setResort(true); // Or directly call fetch if applicable
   };
 
   // FETCHING FILMSGALLERY
@@ -85,8 +94,8 @@ const FilmsGallery = () => {
     return <div>Error: {error}</div>;
   }
   return (
-    <div>
-      <div className="flex justify-end mt-2 md:mr-6">
+    <div className="pb-10">
+      <div className="flex justify-end mt-2 md:mr-6 ">
         <Listbox value={sorting} onChange={handleSort}>
           <div className="w-max relative">
             <ListboxButton className="relative w-max cursor-default rounded-md bg-color-background text-color-text_light py-3 pl-3 pr-12 text-left shadow-md ring-1 ring-inset ring-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-3 text-base lg:text-xl">
@@ -194,8 +203,18 @@ const FilmsGallery = () => {
               <div>No films found.</div>
             )}
           </div>
+
           <div></div>
         </div>
+      </div>
+      <div className="flex justify-center">
+        <button
+          onClick={handleLoadMore}
+          disabled={galleryStatus == "idle"}
+          className="mx-auto bg-accent-1 px-5 py-3 text-xl font-extrabold rounded-md shadow-xl tracking-wider border-2 border-transparent text-color-background hover:bg-transparent hover:text-accent-1 hover:border-2 hover:border-accent-1 transition-all duration-200 my-5 box-border active:shadow-white"
+        >
+          More Films
+        </button>
       </div>
     </div>
   );
