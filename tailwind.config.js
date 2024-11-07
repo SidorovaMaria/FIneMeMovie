@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        color: { background: "var(--background)", text_light: "#e4e4e7" },
+        color: { background: "var(--background)", text_light: "white" },
         accent: {
           1: "var(--accent1)",
           2: "var(--accent2)",
