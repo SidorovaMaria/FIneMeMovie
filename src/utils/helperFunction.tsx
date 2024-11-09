@@ -1,6 +1,11 @@
-import { Budget } from "../components/Films/filmsSlice";
+import { useState, useEffect } from "react";
+import { Budget, Trailer } from "../components/Films/filmsSlice";
 interface BudgetCountryProps {
   budget: Budget; // The prop is typed to be a `Budget`
+}
+
+interface ShowTrailerProps {
+  trailer: Trailer;
 }
 export const BudgetCountry: React.FC<BudgetCountryProps> = ({ budget }) => {
   if (budget.type == "BUDGET") {
@@ -29,4 +34,52 @@ export const BudgetCountry: React.FC<BudgetCountryProps> = ({ budget }) => {
       </p>
     </div>
   ); // Access budget properties here
+};
+
+export const ShowTrailer: React.FC<ShowTrailerProps> = ({ trailer }) => {
+  const extractVideoId = trailer.url.match("(?:/v/|[?&]v=)([a-zA-Z0-9_-]+)");
+  const videoId = extractVideoId ? extractVideoId[1] : null;
+
+  const [isVideoAvailable, setIsVideoAvailable] = useState(false);
+  const checkVideoAvailability = async (id: string | null) => {
+    if (!id) return setIsVideoAvailable(false);
+    try {
+      // Using oEmbed API to check if the video is available
+      const response = await fetch(
+        ` https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`
+      );
+      if (response.status == 200) {
+        console.log(response);
+        setIsVideoAvailable(true);
+      } else {
+        console.log("NOO");
+        setIsVideoAvailable(false);
+      }
+    } catch (error) {
+      // console.error("Error checking video availability:", error);
+      setIsVideoAvailable(false);
+    }
+  };
+  useEffect(() => {
+    checkVideoAvailability(String(videoId));
+  }, [trailer.url]);
+  console.log(isVideoAvailable);
+
+  return (
+    <div className="text-white font-bold text-lg">
+      {isVideoAvailable ? (
+        <div>
+          <iframe
+            width="300"
+            height="auto"
+            src={trailer.url.replace("watch?v=", "embed/")}
+            title="YouTube Trailer"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+          <h2>{trailer.name}</h2>
+        </div>
+      ) : null}
+    </div>
+  );
 };

@@ -21,6 +21,7 @@ export interface Film {
   genres: Genre[];
   boxOffice?: Budget[];
   similarFilms: SimilarFilm[];
+  trailers: Trailer[];
 }
 export interface Genre {
   genre: string;
@@ -35,6 +36,11 @@ export interface SimilarFilm {
   nameRu: string;
   nameoriginal: string;
   posterUrl: string;
+}
+export interface Trailer {
+  url: string;
+  name: string;
+  site: string;
 }
 
 const initialState: FilmsState = {
@@ -99,6 +105,16 @@ export const FetchFilmDetails = createAsyncThunk(
         },
       }
     );
+    const responseTrailers = await fetch(
+      `https://kinopoiskapiunofficial.tech/api/v2.2/films/${filmId}/videos`,
+      {
+        method: "GET",
+        headers: {
+          "X-API-Key": kinoPoiskApi,
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const responseSimilarFilms = await fetch(
       `https://kinopoiskapiunofficial.tech/api/v2.2/films/${filmId}/similars`,
       {
@@ -112,11 +128,13 @@ export const FetchFilmDetails = createAsyncThunk(
     const dataDetails = await responseDetails.json();
     const dataBudget = await responseBudget.json();
     const similarFilms = await responseSimilarFilms.json();
+    const dataTrailers = await responseTrailers.json();
     return {
       filmId,
       details: dataDetails,
       budget: dataBudget.items,
       similars: similarFilms.items,
+      trailers: dataTrailers.items,
     };
   }
 );
@@ -151,11 +169,12 @@ const filmsSlice = createSlice({
       })
       .addCase(FetchFilmDetails.fulfilled, (state, action) => {
         state.filmPageStatus = "succeeded";
-        const { filmId, details, budget, similars } = action.payload;
+        const { filmId, details, budget, similars, trailers } = action.payload;
         state.filmDetails[filmId] = {
           ...details,
           boxOffice: budget,
           similarFilms: similars,
+          trailers: trailers,
         };
       });
   },

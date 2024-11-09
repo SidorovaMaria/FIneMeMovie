@@ -1,8 +1,8 @@
 import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../utils/hook";
-import { FetchFilmDetails } from "./filmsSlice";
+import { FetchFilmDetails, Trailer } from "./filmsSlice";
 import { useEffect, useState } from "react";
-import { BudgetCountry } from "../../utils/helperFunction";
+import { BudgetCountry, ShowTrailer } from "../../utils/helperFunction";
 
 const FilmPage = () => {
   const { filmId } = useParams();
@@ -26,12 +26,12 @@ const FilmPage = () => {
   }
   return (
     <div className="py-10 px-6 ">
-      <div className="flex flex-col justify-center items-center lg:flex-row gap-10">
+      <div className="flex flex-col justify-center items-center lg:flex-row gap-10 ">
         {/* Image and Trailer */}
         <div className="">
           <img
             src={film.posterUrl}
-            className="w-auto  min-w-64 max-w-96 rounded"
+            className="w-auto  max-w-96 rounded"
             alt={film.nameOriginal}
           />
         </div>
@@ -108,14 +108,34 @@ const FilmPage = () => {
           </div>
         </div>
       </div>
-
       <div className="w-[80%] mx-auto my-6">
         <h4 className="font-bold text-2xl my-5 tracking-wider text-center lg:text-left ">
-          Похожие фильмы
+          Трейлеры
         </h4>
-        <div className="flex gap-10 overflow-x-auto items-start ">
-          {film.similarFilms ? (
-            film.similarFilms.map((item) => (
+        <div className="flex gap-10 overflow-x-auto items-start">
+          {film.trailers ? (
+            // Find the first trailer that matches the condition
+            film.trailers
+              .filter((item: Trailer) => item.site === "YOUTUBE")
+              .slice(0, 8)
+              // Take only the first matched trailer
+              .map((item) => (
+                <ShowTrailer key={item.url} trailer={item} /> // Render the first trailer
+              ))
+          ) : (
+            <div>
+              <h1>No Similar films found</h1>
+            </div>
+          )}
+        </div>
+      </div>
+      {film.similarFilms.length != 0 ? (
+        <div className="w-[80%] mx-auto my-6">
+          <h4 className="font-bold text-2xl my-5 tracking-wider text-center lg:text-left ">
+            Похожие фильмы
+          </h4>
+          <div className="flex gap-10 overflow-x-auto items-start ">
+            {film.similarFilms.map((item) => (
               <Link to={`/film/${item.filmId}`}>
                 <div
                   key={item.filmId}
@@ -130,14 +150,14 @@ const FilmPage = () => {
                   </h1>
                 </div>
               </Link>
-            ))
-          ) : (
-            <div>
-              <h1> No Similar films found </h1>
-            </div>
-          )}
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="w-[80%] mx-auto my-6">
+          <h1> No Similar films found </h1>
+        </div>
+      )}
     </div>
   );
 };
