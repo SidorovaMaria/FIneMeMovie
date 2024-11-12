@@ -11,6 +11,7 @@ import {
   ListboxOptions,
 } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import Loading from "../Loading";
 
 const FilmsGallery = () => {
   const dispatch = useAppDispatch();
@@ -84,18 +85,19 @@ const FilmsGallery = () => {
   if (galleryStatus === "pending" && films.length === 0) {
     return (
       <div className="text-center p-5">
-        <p className="text dispatch(fetchFilmGallery(filmsParameters));-5xl">
-          Loading
-        </p>
+        <div className="text dispatch(fetchFilmGallery(filmsParameters));-5xl">
+          <Loading />
+        </div>
       </div>
     );
   }
   if (galleryStatus === "rejected") {
     return <div>Error: {error}</div>;
   }
+
   return (
     <div className="pb-10">
-      <div className="flex justify-end mt-2 md:mr-6 ">
+      <div className="flex justify-end my-5 md:mx-6 ">
         <Listbox value={sorting} onChange={handleSort}>
           <div className="w-max relative">
             <ListboxButton className="relative w-max cursor-default rounded-md bg-color-background text-color-text_light py-3 pl-3 pr-12 text-left shadow-md ring-1 ring-inset ring-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-3 text-base lg:text-xl">
@@ -114,7 +116,7 @@ const FilmsGallery = () => {
 
             <ListboxOptions
               transition
-              className="absolute z-10 mt-1 w-full right-0 overflow-auto rounded-md bg-white/70 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm"
+              className="absolute z-10  w-full right-0 overflow-auto rounded-md bg-white/70 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm"
             >
               {SortBy.map((sortOption) => (
                 <ListboxOption
@@ -193,27 +195,24 @@ const FilmsGallery = () => {
             </button>
           </div>
         </div>
-        <div className="flex flex-col justify-center items-center p-8">
-          <div className="text-white grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 gap-12 mx-auto ">
-            {films.length > 0 ? (
-              films.map((film) => (
-                <FilmCard film={film} key={film.kinopoiskId} />
-              ))
-            ) : (
-              <div>No films found.</div>
-            )}
-          </div>
-
-          <div></div>
+        <div className="text-white grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 gap-12 mx-auto">
+          {films.length > 0 ? (
+            films.map((film, index) => {
+              console.log(`${film.kinopoiskId}-10`);
+              return <FilmCard film={film} key={`${film.imdbId}`} />;
+            })
+          ) : (
+            <div>No films found.</div>
+          )}
         </div>
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-10">
         <button
           onClick={handleLoadMore}
           disabled={galleryStatus == "idle"}
           className="mx-auto bg-accent-1 px-5 py-3 text-xl font-extrabold rounded-md shadow-xl tracking-wider border-2 border-transparent text-color-background hover:bg-transparent hover:text-accent-1 hover:border-2 hover:border-accent-1 transition-all duration-200 my-5 box-border active:shadow-white"
         >
-          More Films
+          {galleryStatus === "pending" ? "Loading..." : "More Films"}
         </button>
       </div>
     </div>

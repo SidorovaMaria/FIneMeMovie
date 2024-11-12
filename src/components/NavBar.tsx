@@ -1,3 +1,5 @@
+import { useParams } from "react-router-dom";
+
 const NavBar = () => {
   return (
     <section className="px-10  py-10 bg-gradient-to-b rounded-b-2xl shadow-xl shadow-accent-2  bg-[#1e1d23]">

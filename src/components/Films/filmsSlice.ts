@@ -10,6 +10,7 @@ interface FilmsState {
 
 export interface Film {
   kinopoiskId: number;
+  imdbId: string;
   nameRu?: string;
   nameOriginal?: string;
   posterUrl?: string;

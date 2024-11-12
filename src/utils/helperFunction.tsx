@@ -48,22 +48,21 @@ export const ShowTrailer: React.FC<ShowTrailerProps> = ({ trailer }) => {
       const response = await fetch(
         ` https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`
       );
-      if (response.status == 200) {
-        console.log(response);
+
+      if (response.status === 200) {
         setIsVideoAvailable(true);
+      } else if (response.status === 404 || response.status === 403) {
+        setIsVideoAvailable(false);
       } else {
-        console.log("NOO");
         setIsVideoAvailable(false);
       }
     } catch (error) {
-      // console.error("Error checking video availability:", error);
       setIsVideoAvailable(false);
     }
   };
   useEffect(() => {
     checkVideoAvailability(String(videoId));
   }, [trailer.url]);
-  console.log(isVideoAvailable);
 
   return (
     <div className="text-white font-bold text-lg">
