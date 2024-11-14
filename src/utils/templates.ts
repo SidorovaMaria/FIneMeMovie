@@ -12,6 +12,10 @@ export const yearsOptions = [
   { value: "1980-1985", label: "1980-1985" },
   { value: "1975-1980", label: "1975-1980" },
 ];
+export type SortOption = {
+  value: string;
+  label: string;
+};
 export const SortBy = [
   { value: "RATING", label: "По рейтингу" },
   { value: "YEAR", label: "По году выхода" },

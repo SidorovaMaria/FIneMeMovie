@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Film } from "./filmsSlice";
 
 // Define the props type for FilmCard
@@ -25,12 +25,15 @@ export const FilmCard: React.FC<FilmCardProps> = ({ film }) => {
             </span>
           </p>
           <div className="text-center font-medium tracking-wide text-xs md:text-sm px-3 py-2">
-            {film.genres.map((genre, index) => (
-              <span className="" key={`${film.kinopoiskId}-${genre}`}>
-                {genre.genre}
-                {index < film.genres.length - 1 ? ", " : ""}
-              </span>
-            ))}
+            {film.genres.map((genre, index) => {
+              if (!genre.genre) return;
+              return (
+                <span className="" key={`${film.kinopoiskId}-${genre.genre}`}>
+                  {genre.genre}
+                  {index < film.genres.length - 1 ? ", " : ""}
+                </span>
+              );
+            })}
           </div>
           <div className="flex justify-around ">
             {film.ratingImdb ? (

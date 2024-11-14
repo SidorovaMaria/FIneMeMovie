@@ -21,8 +21,8 @@ export interface Film {
   shortDescription?: string;
   genres: Genre[];
   boxOffice?: Budget[];
-  similarFilms: SimilarFilm[];
-  trailers: Trailer[];
+  similarFilms?: SimilarFilm[];
+  trailers?: Trailer[];
 }
 export interface Genre {
   genre: string;
@@ -45,7 +45,55 @@ export interface Trailer {
 }
 
 const initialState: FilmsState = {
-  films: [],
+  films: [
+    {
+      kinopoiskId: 5444474,
+      imdbId: "tt28703544",
+      nameRu: "Шаранутый космос",
+      nameOriginal: "SolarBalls",
+      genres: [
+        {
+          genre: "драма",
+        },
+        {
+          genre: "фантастика",
+        },
+        {
+          genre: "комедия",
+        },
+        {
+          genre: "мультфильм",
+        },
+      ],
+      ratingKinopoisk: 9.2,
+      ratingImdb: 9,
+      year: 2022,
+      posterUrl:
+        "https://kinopoiskapiunofficial.tech/images/posters/kp/5444474.jpg",
+    },
+    {
+      kinopoiskId: 435,
+      imdbId: "tt0120689",
+      nameRu: "Зеленая миля",
+      nameOriginal: "The Green Mile",
+      genres: [
+        {
+          genre: "драма",
+        },
+        {
+          genre: "криминал",
+        },
+        {
+          genre: "фэнтези",
+        },
+      ],
+      ratingKinopoisk: 9.1,
+      ratingImdb: 8.6,
+      year: 1999,
+      posterUrl:
+        "https://kinopoiskapiunofficial.tech/images/posters/kp/435.jpg",
+    },
+  ],
   filmDetails: {},
   galleryStatus: "idle",
   filmPageStatus: "idle",

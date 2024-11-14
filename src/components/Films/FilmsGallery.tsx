@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../utils/hook";
 import { fetchFilmGallery } from "./filmsSlice";
 import { FilmCard } from "./FilmCard";
-import { SortBy, yearsOptions } from "../../utils/templates";
+import { SortBy, SortOption, yearsOptions } from "../../utils/templates";
 import {
   Label,
   Listbox,
@@ -50,7 +50,8 @@ const FilmsGallery = () => {
     setResort(true); // Set resort flag to trigger fetching
   };
 
-  const handleSort = (value) => {
+  const handleSort = (value: SortOption) => {
+    console.log(value);
     setSorting(value);
     setFilmsParameters((prevParams) => ({
       ...prevParams,
@@ -102,27 +103,27 @@ const FilmsGallery = () => {
           <div className="w-max relative">
             <ListboxButton className="relative w-max cursor-default rounded-md bg-color-background text-color-text_light py-3 pl-3 pr-12 text-left shadow-md ring-1 ring-inset ring-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-3 text-base lg:text-xl">
               <span className="flex items-center">
-                <span className="ml-3 block font-bold tracking-wider">
+                <span className="ml-3 block font-extrabold tracking-wider">
                   {sorting.label}
                 </span>
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
                 <ChevronUpDownIcon
                   aria-hidden="true"
-                  className="h-5 w-5 text-color-text_light"
+                  className="h-5 w-5 text-color-text_light "
                 />
               </span>
             </ListboxButton>
 
             <ListboxOptions
               transition
-              className="absolute z-10  w-full right-0 overflow-auto rounded-md bg-white/70 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm"
+              className="absolute z-10  w-full right-0 overflow-auto rounded-md bg-white text-lg px-1 shadow-lg font-extrabold ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-base "
             >
               {SortBy.map((sortOption) => (
                 <ListboxOption
                   key={sortOption.value}
                   value={sortOption}
-                  className="group relative cursor-default select-none py-2 pl-2 pr-6 text-gray-900 data-[focus]:bg-accent-3 data-[focus]:text-white"
+                  className="group relative cursor-default select-none py-2 pl-2 pr-6 text-gray-900 data-[focus]:bg-accent-3 data-[focus]:text-white border-2 border-accent-3 rounded-md my-1"
                 >
                   <div className="flex items-center">
                     <span className="ml-3 block truncate font-normal group-data-[selected]:font-semibold">
@@ -139,7 +140,7 @@ const FilmsGallery = () => {
           </div>
         </Listbox>
       </div>
-      <div className="flex md:ml-10 gap-5 mx-1">
+      <div className="flex md:mx-10 gap-5 mx-1 ">
         <div className="py-5  hidden">
           <h3 className="text-base lg:text-xl font-bold  text-center my-2">
             Отсортировать фильмы
@@ -197,9 +198,8 @@ const FilmsGallery = () => {
         </div>
         <div className="text-white grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 gap-12 mx-auto">
           {films.length > 0 ? (
-            films.map((film, index) => {
-              console.log(`${film.kinopoiskId}-10`);
-              return <FilmCard film={film} key={`${film.imdbId}`} />;
+            films.map((film) => {
+              return <FilmCard film={film} key={`${film.kinopoiskId}`} />;
             })
           ) : (
             <div>No films found.</div>

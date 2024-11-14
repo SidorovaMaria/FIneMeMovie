@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../utils/hook";
 import { FetchFilmDetails, Trailer } from "./filmsSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { BudgetCountry, ShowTrailer } from "../../utils/helperFunction";
 import Loading from "../Loading";
 import { Error404 } from "../Error404";
@@ -16,7 +16,8 @@ const FilmPage = () => {
 
   useEffect(() => {
     if (filmId && !film) {
-      dispatch(FetchFilmDetails(Number(filmId))); // Dispatch action to fetch film details
+      dispatch(FetchFilmDetails(Number(filmId)));
+      // Dispatch action to fetch film details
     }
   }, [filmId, dispatch, film]); // Dependencies: Only fetch again if filmId or film changes
 
@@ -35,6 +36,14 @@ const FilmPage = () => {
       </>
     );
   }
+  console.log(film.trailers);
+  let avalableTrailer: Trailer[] = [];
+  if (film.trailers) {
+    avalableTrailer = film.trailers
+      .filter((item: Trailer) => item.site === "YOUTUBE")
+      .slice(0, 8);
+  }
+  console.log(avalableTrailer);
   return (
     <div>
       <div className="flex items-center">
@@ -131,35 +140,30 @@ const FilmPage = () => {
             </div>
           </div>
         </div>
-        <div className="w-[80%] mx-auto my-6">
-          <h4 className="font-bold text-2xl my-5 tracking-wider text-center lg:text-left ">
-            Трейлеры
-          </h4>
-          <div className="flex gap-10 overflow-x-auto items-start">
-            {film.trailers ? (
-              // Find the first trailer that matches the condition
-              film.trailers
-                .filter((item: Trailer) => item.site === "YOUTUBE")
-                .slice(0, 8)
-                // Take only the first matched trailer
-                .map((item) => (
-                  <ShowTrailer key={item.url} trailer={item} /> // Render the first trailer
-                ))
-            ) : (
-              <div>
-                <h1>No Similar films found</h1>
-              </div>
-            )}
+
+        {avalableTrailer && avalableTrailer.length !== 0 ? (
+          <div>
+            <h4 className="font-bold text-2xl my-5 tracking-wider text-center lg:text-left">
+              Трейлеры
+            </h4>
+            <div className="flex gap-10 overflow-x-auto items-start">
+              {avalableTrailer.map((item) => (
+                <ShowTrailer key={item.url} trailer={item} />
+              ))}
+            </div>
           </div>
-        </div>
-        {film.similarFilms.length != 0 ? (
+        ) : (
+          <div className="w-[80%] mx-auto my-6">
+            <h1> Have no trailer to show at the moment</h1>
+          </div>
+        )}
+        {film.similarFilms && film.similarFilms.length != 0 ? (
           <div className="w-[80%] mx-auto my-6">
             <h4 className="font-bold text-2xl my-5 tracking-wider text-center lg:text-left ">
               Похожие фильмы
             </h4>
             <div className="flex gap-10 overflow-x-auto items-start ">
               {film.similarFilms.map((item, index) => {
-                console.log(`${item.filmId}-${index}`);
                 return (
                   <Link
                     to={`/film/${item.filmId}`}
