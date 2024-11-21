@@ -212,7 +212,7 @@ const FilmsGallery = () => {
           disabled={galleryStatus == "idle"}
           className="mx-auto bg-accent-1 px-5 py-3 text-xl font-extrabold rounded-md shadow-xl tracking-wider border-2 border-transparent text-color-background hover:bg-transparent hover:text-accent-1 hover:border-2 hover:border-accent-1 transition-all duration-200 my-5 box-border active:shadow-white"
         >
-          {galleryStatus === "pending" ? "Loading..." : "More Films"}
+          {galleryStatus === "pending" ? "Загрузка..." : "Показать больше"}
         </button>
       </div>
     </div>
