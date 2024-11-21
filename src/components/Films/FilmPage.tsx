@@ -43,7 +43,6 @@ const FilmPage = () => {
       </>
     );
   }
-  console.log(film.trailers);
   let avalableTrailer: Trailer[] = [];
   if (film.trailers) {
     avalableTrailer = film.trailers
