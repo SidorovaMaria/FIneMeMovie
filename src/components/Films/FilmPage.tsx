@@ -3,6 +3,13 @@ import { useAppDispatch, useAppSelector } from "../../utils/hook";
 import { FetchFilmDetails, Trailer } from "./filmsSlice";
 import { useEffect } from "react";
 import { BudgetCountry, ShowTrailer } from "../../utils/helperFunction";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowLeft,
+  faFaceSadTear,
+  faFaceSadCry,
+} from "@fortawesome/free-solid-svg-icons";
+
 import Loading from "../Loading";
 import { Error404 } from "../Error404";
 
@@ -49,12 +56,15 @@ const FilmPage = () => {
       <div className="flex items-center">
         <Link
           to={`/`}
-          className="my-4 text-center mx-auto font-extrabold bg-red px-4 py-3 border-2 rounded-xl  text-lg tracking-wide text-accent-1 shadow-lg shadow-accent-2
-          hover:translate-y-1 hover:shadow-none hover:bg-accent-3 hover:text-white transition-all duration-300 ease-in-out
-          lg:absolute md:z-20  md:top-5 md:left-10"
+          className="my-4 text-center mx-auto font-extrabold bg-red px-4 py-3 border-2 rounded-xl  text-lg tracking-wide text-accent-1 shadow-lg shadow-accent-2 flex flex-row justify-center items-center gap-4
+          hover:translate-y-1 hover:shadow-none hover:bg-accent-3 hover:text-white transition-all duration-300 ease-in-out capitalize 
+          lg:absolute md:z-20  md:top-3 md:left-10"
           // className=" md:absolute z-20  top-8 left-10 "
         >
-          Back To All Films
+          <div className="inline text-3xl text-white">
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </div>
+          Вернуться
         </Link>
       </div>
       <div className="py-8 px-6 ">
@@ -153,8 +163,15 @@ const FilmPage = () => {
             </div>
           </div>
         ) : (
-          <div className="w-[80%] mx-auto my-6">
-            <h1> Have no trailer to show at the moment</h1>
+          <div className="w-[50%] mx-auto my-6 text-center font-bold text-xl ">
+            <FontAwesomeIcon
+              icon={faFaceSadTear}
+              className="text-[5rem] text-white mb-5"
+            />
+            <h1 className="">
+              На данный момент у нас нет трейлера, который можно было бы
+              показать
+            </h1>
           </div>
         )}
         {film.similarFilms && film.similarFilms.length != 0 ? (
@@ -184,8 +201,12 @@ const FilmPage = () => {
             </div>
           </div>
         ) : (
-          <div className="w-[80%] mx-auto my-6">
-            <h1> No Similar films found </h1>
+          <div className="w-[50%] mx-auto my-6 text-center font-bold text-xl ">
+            <FontAwesomeIcon
+              icon={faFaceSadCry}
+              className="text-[5rem] text-white mb-5"
+            />
+            <h1>Похожих фильмов не найдено </h1>
           </div>
         )}
       </div>
