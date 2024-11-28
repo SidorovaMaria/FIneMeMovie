@@ -129,6 +129,15 @@ export const fetchFilmGallery = createAsyncThunk(
     );
     const data = await response.json();
     return { films: data.items as Film[], page, sortValue };
+  },
+  {
+    // Prevents fetching if the gallery is not in an idle state
+    condition: (_, { getState }) => {
+      const { galleryStatus } = (getState() as { films: FilmsState }).films;
+      if (galleryStatus !== "idle") {
+        return false;
+      }
+    },
   }
 );
 export const FetchFilmDetails = createAsyncThunk(
@@ -185,6 +194,19 @@ export const FetchFilmDetails = createAsyncThunk(
       similars: similarFilms.items,
       trailers: dataTrailers.items,
     };
+  },
+  {
+    // Prevents fetching if film details for the given ID are already being loaded
+    condition: (filmId, { getState }) => {
+      const { filmPageStatus, filmDetails } = (
+        getState() as {
+          films: FilmsState;
+        }
+      ).films;
+      if (filmPageStatus !== "idle" || filmDetails[filmId]) {
+        return false;
+      }
+    },
   }
 );
 
